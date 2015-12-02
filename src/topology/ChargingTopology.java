@@ -298,7 +298,7 @@ public class ChargingTopology {
 			//redis连接
 			jedis = RedisClient.getJedis();
 			// TODO mangoDB连接
-			mg = MangoDBUtil.getMongoDB();
+			mg = MangoDBUtil.getMongoDB("172.16.12.83",50000);
 			db = mg.getDB("log");
 			
 			Map map = (Map) input.getValue(0);
