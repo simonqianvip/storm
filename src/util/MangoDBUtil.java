@@ -1,6 +1,7 @@
 package util;
 
-import java.util.regex.Pattern;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 import com.mongodb.BasicDBObject;
 import com.mongodb.DB;
@@ -8,9 +9,11 @@ import com.mongodb.DBCollection;
 import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
 import com.mongodb.Mongo;
+import com.mongodb.WriteResult;
 import com.mongodb.util.JSON;
 
 public class MangoDBUtil {
+	private static Log log = LogFactory.getLog(MangoDBUtil.class);
 	private static final String IP = "172.16.12.83";
 	private static final int PORT = 50000;
 	private static Mongo mg = null;
@@ -26,6 +29,7 @@ public class MangoDBUtil {
 	public static Mongo getMongoDB(String ip, int port) {
 		try {
 			mg = new Mongo(ip, port);
+			log.info("【 mongoDB connection server success】");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -44,6 +48,7 @@ public class MangoDBUtil {
 		mg = getMongoDB(IP, PORT);
 		getDatabase(dbName);
 		dbConllection = db.getCollection(collections);
+		log.info("【 connection " + dbName + "." + collections + " success】");
 		return dbConllection;
 	}
 
@@ -53,6 +58,7 @@ public class MangoDBUtil {
 	 * @param dbName
 	 */
 	public static DB getDatabase(String dbName) {
+		log.info("【connection " + dbName + " success 】");
 		return db = mg.getDB(dbName);
 	}
 
@@ -69,18 +75,18 @@ public class MangoDBUtil {
 		mg = null;
 		db = null;
 		dbConllection = null;
+		log.info("【close " + db + "." + dbConllection + " 】");
 	}
 
 	// 查询所有数据
 	private static void queryAll() {
-		System.out.println("查询users的所有数据：");
+		log.info("【查询users的所有数据：】");
 		// db游标
 		DBCursor cur = dbConllection.find();
 		while (cur.hasNext()) {
-			System.out.println(cur.next());
+			log.info(cur.next());
 		}
-		System.out.println("count:" + cur.count());
-		;
+		log.info("【 count:" + cur.count() + " 】");
 	}
 
 	// 添加数据
@@ -88,7 +94,8 @@ public class MangoDBUtil {
 		DBObject user = new BasicDBObject();
 		user.put("name", "hoojo");
 		user.put("age", 24);
-		System.out.println(dbConllection.save(user));
+		WriteResult result = dbConllection.save(user);
+		log.info("【 save success , result is " + result + " 】");
 	}
 
 	// 删除数据
@@ -101,11 +108,13 @@ public class MangoDBUtil {
 	}
 
 	// 根据条件查找数据
-	public static void find(String dbName,String collections,BasicDBObject condition) {
-		DBCollection conllection = MangoDBUtil.getDBConllection(dbName, collections);
+	public static void find(String dbName, String collections,
+			BasicDBObject condition) {
+		DBCollection conllection = MangoDBUtil.getDBConllection(dbName,
+				collections);
 		DBCursor find = conllection.find(condition);
 		while (find.hasNext()) {
-			System.out.println(find.next());
+			log.info(find.next());
 		}
 	}
 
@@ -116,7 +125,7 @@ public class MangoDBUtil {
 		mg = MangoDBUtil.getMongoDB(IP, PORT);
 		db = MangoDBUtil.getDatabase(dbName);
 		for (String name : db.getCollectionNames()) {
-			System.out.println("collection:" + name);
+			log.info("collection:" + name);
 		}
 	}
 
@@ -125,36 +134,33 @@ public class MangoDBUtil {
 	 */
 	public static void showAllDatabase() {
 		mg = MangoDBUtil.getMongoDB(IP, PORT);
-		System.out.println(mg.getDatabaseNames());
+		log.info(mg.getDatabaseNames());
 	}
-	
+
 	/**
 	 * 展示集合里每条记录
 	 */
-	public static void showInfo(String dbName,String Collections) {
+	public static void showInfo(String dbName, String Collections) {
 		dbConllection = MangoDBUtil.getDBConllection(dbName, Collections);
 		DBCursor cursor = dbConllection.find();
-		 while (cursor.hasNext()) {
-		 System.out.println(cursor.next());
-		 }
-		 System.out.println(JSON.serialize(cursor));
+		while (cursor.hasNext()) {
+			log.info(cursor.next());
+		}
+		log.info(JSON.serialize(cursor));
 	}
 
 	@SuppressWarnings("deprecation")
 	public static void main(String[] args) {
-		/*
-		 * dataBase:events,log
-		 * table:log_201511,logextend_201511,ivrlognew
-		 */
-//		DBCollection dbc = MangoDBUtil.getDBConllection("log", "log_201511");
-
+		//dataBase:events,log table:log_201511,logextend_201511,ivrlognew
+		// DBCollection dbc = MangoDBUtil.getDBConllection("log", "log_201511");
 		/*
 		 * caller id uuid api_k
 		 */
 		CountTimeUtil.countTime(new CallBack() {
 			@Override
 			public void execute() {
-				find("events","ivrlognew",new BasicDBObject("caller", "15994011574"));
+				find("events", "ivrlognew", new BasicDBObject("caller",
+						"15994011574"));
 			}
 		});
 	}
