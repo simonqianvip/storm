@@ -22,6 +22,7 @@ public class RedisUtil {
 		jedis.select(1);
 		Long size = jedis.dbSize();
 		log.info("key的个数=" + size);
+		log.error("key的个数=" + size);
 		if(size>=1){
 			System.out.println("显示redis库里的所有key******************");
 			Set<String> keys = jedis.keys("*");

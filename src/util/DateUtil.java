@@ -1,6 +1,5 @@
 package util;
 
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Map;
@@ -9,12 +8,12 @@ import com.google.gson.Gson;
 
 public class DateUtil {
 	/**
-	 * ÈÕÆÚ×ª»»³ÉÃë
+	 * ï¿½ï¿½ï¿½ï¿½×ªï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 	 * @param str
 	 * @return double
 	 * @throws Exception
 	 * @author simon
-	 * @date 2015Äê6ÔÂ11ÈÕ ÏÂÎç1:20:08
+	 * @date 2015ï¿½ï¿½6ï¿½ï¿½11ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½1:20:08
 	 */
 	public static double dateChangeSecond(String str) throws Exception{
 		SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -23,12 +22,12 @@ public class DateUtil {
 		return time/1000;
 	}
 	/**
-	 * ÃëÏòÉÏÈ¡Õû
-	 * Àý×Ó£º61Ãë = 120Ãë£»
+	 * ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½È¡ï¿½ï¿½
+	 * ï¿½ï¿½ï¿½Ó£ï¿½61ï¿½ï¿½ = 120ï¿½ë£»
 	 * @param num
 	 * @return
 	 * @author simon
-	 * @date 2015Äê6ÔÂ11ÈÕ ÏÂÎç1:27:43
+	 * @date 2015ï¿½ï¿½6ï¿½ï¿½11ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½1:27:43
 	 */
 	public static double secondCeil(double num){
 		if(num != 0){
@@ -37,11 +36,11 @@ public class DateUtil {
 		return num;
 	}
 	/**
-	 * ÈÕÆÚ×ª»»³ÉString
+	 * ï¿½ï¿½ï¿½ï¿½×ªï¿½ï¿½ï¿½ï¿½String
 	 * @param time
-	 * @return ×Ö·û´®
+	 * @return ï¿½Ö·ï¿½
 	 * @author simon
-	 * @date 2015Äê6ÔÂ11ÈÕ ÏÂÎç1:37:12
+	 * @date 2015ï¿½ï¿½6ï¿½ï¿½11ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½1:37:12
 	 */
 	public static String dateChangeString(Date time){
 		SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");  
@@ -50,13 +49,13 @@ public class DateUtil {
 		return str;
 	}
 	/**
-	 * ·µ»Ø²¦´òÊµ¼ÊÊ±¼ä
+	 * ï¿½ï¿½ï¿½Ø²ï¿½ï¿½ï¿½Êµï¿½ï¿½Ê±ï¿½ï¿½
 	 * @param start
 	 * @param end
 	 * @return
 	 * @throws Exception
 	 * @author simon
-	 * @date 2015Äê6ÔÂ11ÈÕ ÏÂÎç1:47:11
+	 * @date 2015ï¿½ï¿½6ï¿½ï¿½11ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½1:47:11
 	 */
 	public static double ticketTime(Date start,Date end) throws Exception{
 		double s = DateUtil.dateChangeSecond(DateUtil.dateChangeString(start));
@@ -65,11 +64,11 @@ public class DateUtil {
 	}
 	
 	/**
-	 * json×ª»»³Émap
+	 * json×ªï¿½ï¿½ï¿½ï¿½map
 	 * @param jsonStr
 	 * @return
 	 * @author simon
-	 * @date 2015Äê6ÔÂ16ÈÕ ÉÏÎç10:06:17
+	 * @date 2015ï¿½ï¿½6ï¿½ï¿½16ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½10:06:17
 	 */
 	public static Map<String, String> jsonToMap(String jsonStr) { 
 		Map<String, String> ObjectMap = null; 

@@ -1,10 +1,13 @@
 package util;
 
+import org.apache.commons.logging.*;
+
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
 import redis.clients.jedis.JedisPoolConfig;
 
 public class RedisClient {
+	private static Log log = LogFactory.getLog(RedisClient.class);
 	//172.16.12.96    172.16.0.147
 	private static String ADDR = "172.16.0.147";
 	private static int PORT = 6379;
@@ -38,8 +41,10 @@ public class RedisClient {
 		try {
 			if (jedisPool != null) {
 				Jedis resource = jedisPool.getResource();
+				log.info("【 get redis resource success 】");
 				return resource;
 			} else {
+				log.error("【 get redis resource fail 】");
 				return null;
 			}
 		} catch (Exception e) {
@@ -55,6 +60,7 @@ public class RedisClient {
 	public static void returnResource(final Jedis jedis) {
 		if (jedis != null) {
 			jedisPool.returnResource(jedis);
+			log.info("【 return redis resource 】");
 		}
 	}
 
