@@ -50,7 +50,7 @@ public class ChargingTopology {
 	public static class KafkaInfoToMap extends BaseRichBolt {
 		private static final long serialVersionUID = 4296904056487384527L;
 		@SuppressWarnings("unused")
-		private static final Log log = LogFactory.getLog(KafkaInfoToMap.class);
+		private static Log log = LogFactory.getLog(KafkaInfoToMap.class);
 		private OutputCollector collector;
 
 		@SuppressWarnings("rawtypes")
@@ -93,7 +93,7 @@ public class ChargingTopology {
 	 */
 	public static class GetCallingInfo extends BaseRichBolt {
 		private static final long serialVersionUID = 370370555567887885L;
-		private static final Log LOG = LogFactory.getLog(GetCallingInfo.class);
+		private static Log LOG = LogFactory.getLog(GetCallingInfo.class);
 		private OutputCollector collector;
 		private Jedis jedis;
 
@@ -162,7 +162,7 @@ public class ChargingTopology {
 	 */
 	public static class GetChargingInfo extends BaseRichBolt {
 		private static final long serialVersionUID = 8892974852879834702L;
-		private static final Log log = LogFactory.getLog(GetChargingInfo.class);
+		private static Log log = LogFactory.getLog(GetChargingInfo.class);
 		private OutputCollector collector;
 		private Jedis jedis;
 		private static TimeUtil tu = new TimeUtil();
