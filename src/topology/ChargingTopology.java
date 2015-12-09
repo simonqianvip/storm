@@ -19,7 +19,6 @@ import storm.kafka.SpoutConfig;
 import storm.kafka.StringScheme;
 import storm.kafka.ZkHosts;
 import util.MangoDBUtil;
-import util.MapUtil;
 import util.OracleManagerUtil;
 import util.RedisClient;
 import util.TimeUtil;
@@ -98,7 +97,7 @@ public class ChargingTopology {
 	public static class GetCallingInfo extends BaseRichBolt {
 		private static final long serialVersionUID = 370370555567887885L;
 		@SuppressWarnings("unused")
-		private static final Log LOG = LogFactory.getLog(GetCallingInfo.class);
+		private static Log LOG = LogFactory.getLog(GetCallingInfo.class);
 		private OutputCollector collector;
 		private Jedis jedis;
 
@@ -167,7 +166,7 @@ public class ChargingTopology {
 	 */
 	public static class GetChargingInfo extends BaseRichBolt {
 		private static final long serialVersionUID = 8892974852879834702L;
-		private static final Log log = LogFactory.getLog(GetChargingInfo.class);
+		private static Log log = LogFactory.getLog(GetChargingInfo.class);
 		private OutputCollector collector;
 		private Jedis jedis;
 		private static TimeUtil tu = new TimeUtil();
@@ -280,7 +279,7 @@ public class ChargingTopology {
 	 * @author simon
 	 */
 	public static class toMangoDB extends BaseRichBolt {
-		private static final Log log = LogFactory.getLog(toMangoDB.class);
+		private static Log log = LogFactory.getLog(toMangoDB.class);
 		private static final long serialVersionUID = 64499411706133149L;
 		private static final String LOG = "log_";
 		private static final String LOGEXTEND = "logextend_";

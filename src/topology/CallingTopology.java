@@ -10,8 +10,13 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.json.simple.JSONValue;
 
-import com.sun.xml.internal.bind.v2.TODO;
-
+import redis.clients.jedis.Jedis;
+import storm.kafka.BrokerHosts;
+import storm.kafka.KafkaSpout;
+import storm.kafka.SpoutConfig;
+import storm.kafka.StringScheme;
+import storm.kafka.ZkHosts;
+import util.RedisClient;
 import backtype.storm.Config;
 import backtype.storm.LocalCluster;
 import backtype.storm.StormSubmitter;
@@ -27,13 +32,6 @@ import backtype.storm.topology.base.BaseRichBolt;
 import backtype.storm.tuple.Fields;
 import backtype.storm.tuple.Tuple;
 import backtype.storm.tuple.Values;
-import redis.clients.jedis.Jedis;
-import storm.kafka.BrokerHosts;
-import storm.kafka.KafkaSpout;
-import storm.kafka.SpoutConfig;
-import storm.kafka.StringScheme;
-import storm.kafka.ZkHosts;
-import util.RedisClient;
 
 public class CallingTopology {
 
@@ -47,7 +45,7 @@ public class CallingTopology {
 
 	public static class KafkaInfoToMap extends BaseRichBolt {
 		private static final long serialVersionUID = 4296904056487384527L;
-		private static final Log LOG = LogFactory.getLog(KafkaInfoToMap.class);
+		private static Log LOG = LogFactory.getLog(KafkaInfoToMap.class);
 		private OutputCollector collector;
 
 		@Override
@@ -82,7 +80,7 @@ public class CallingTopology {
 
 	public static class GetCallingInfo extends BaseRichBolt {
 		private static final long serialVersionUID = 370370555567887885L;
-		private static final Log LOG = LogFactory.getLog(GetCallingInfo.class);
+		private static Log LOG = LogFactory.getLog(GetCallingInfo.class);
 		private OutputCollector collector;
 		private static RedisClient redis;
 		private Jedis jedis;
@@ -144,7 +142,7 @@ public class CallingTopology {
 	}
 
 	public static class Print extends BaseRichBolt {
-		private static final Log LOG = LogFactory.getLog(Print.class);
+		private static Log LOG = LogFactory.getLog(Print.class);
 		private static final long serialVersionUID = 64499411706133149L;
 		private OutputCollector collector;
 
