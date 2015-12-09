@@ -1,14 +1,17 @@
 package storm;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import com.google.gson.Gson;
 
+import storm.kafka.BrokerHosts;
+import storm.kafka.KafkaSpout;
+import storm.kafka.SpoutConfig;
+import storm.kafka.StringScheme;
+import storm.kafka.ZkHosts;
 import backtype.storm.Config;
 import backtype.storm.LocalCluster;
 import backtype.storm.StormSubmitter;
@@ -23,14 +26,8 @@ import backtype.storm.topology.TopologyBuilder;
 import backtype.storm.topology.base.BaseRichBolt;
 import backtype.storm.tuple.Fields;
 import backtype.storm.tuple.Tuple;
-import backtype.storm.tuple.Values;
-import storm.KuangGongTopology.KafkaWordSplitter;
-import storm.KuangGongTopology.WordCounter;
-import storm.kafka.BrokerHosts;
-import storm.kafka.KafkaSpout;
-import storm.kafka.SpoutConfig;
-import storm.kafka.StringScheme;
-import storm.kafka.ZkHosts;
+
+import com.google.gson.Gson;
 
 public class ChargingTopology {	
 	
@@ -43,16 +40,15 @@ public class ChargingTopology {
 	}
 	
 	/**
-	 * 构建topology
+	 * 锟斤拷锟斤拷topology
 	 * @return
 	 * @author simon
-	 * @date 2015年6月9日 下午4:14:25
+	 * @date 2015锟斤拷6锟斤拷9锟斤拷 锟斤拷锟斤拷4:14:25
 	 */
 	private StormTopology builTopology() {
 		SpoutConfig spoutConf = new SpoutConfig(this.brokerHosts, this.topic, "/mykakfa", "word");
 		spoutConf.scheme = new SchemeAsMultiScheme(new StringScheme());
 		TopologyBuilder builder = new TopologyBuilder();
-		//设置线程数为8
 		builder.setSpout("charging_logs", new KafkaSpout(spoutConf), 3);
 		builder.setBolt("Sentence-Filter", new SentenceFilter(), 2).globalGrouping("charging_logs");
 //		builder.setBolt("word-counter", new WordCounter()).fieldsGrouping(
@@ -70,9 +66,7 @@ public class ChargingTopology {
 		
 		Config config = new Config();
 		if (args != null && args.length > 0) {
-			//集群环境
 			String name = args[0];
-			//设置工作进程
 			config.setNumWorkers(4);
 			try {
 				StormSubmitter.submitTopology(name, config, stormTopology);
@@ -80,7 +74,6 @@ public class ChargingTopology {
 				e.printStackTrace();
 			}
 		} else {
-			//本地环境
 			List<String> zkServerList = new ArrayList<String>();
 			zkServerList.add("JSNJ-IVR-SRV-I620G10-22");
 			zkServerList.add("JSNJ-IVR-SRV-I620G10-23");
@@ -97,7 +90,6 @@ public class ChargingTopology {
 		}
 	}
 	/**
-	 * 只取512,513的消息
 	 * @author simon
 	 *
 	 */

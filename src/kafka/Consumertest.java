@@ -4,10 +4,6 @@ import java.util.List;
 import java.util.Properties;
 import java.util.concurrent.TimeUnit;
 
-
-
-import org.apache.commons.collections.CollectionUtils;
-
 import kafka.consumer.Consumer;
 import kafka.consumer.ConsumerConfig;
 import kafka.consumer.ConsumerIterator;
@@ -15,6 +11,8 @@ import kafka.consumer.KafkaStream;
 import kafka.consumer.Whitelist;
 import kafka.javaapi.consumer.ConsumerConnector;
 import kafka.message.MessageAndMetadata;
+
+import org.apache.commons.collections.CollectionUtils;
 
 
 public class Consumertest {
@@ -29,7 +27,6 @@ public class Consumertest {
 		ConsumerConfig consumerConfig = new ConsumerConfig(properties);
 		ConsumerConnector javaConsumerConnector = Consumer
 				.createJavaConsumerConnector(consumerConfig);
-		// topic的过滤器
 		Whitelist whitelist = new Whitelist("myTopic");
 		List<KafkaStream<byte[], byte[]>> partitions = javaConsumerConnector
 				.createMessageStreamsByFilter(whitelist);
@@ -37,7 +34,6 @@ public class Consumertest {
 			System.out.println("empty!");
 			TimeUnit.SECONDS.sleep(1);
 		}
-		// 消费消息
 		for (KafkaStream<byte[], byte[]> partition : partitions) {
 			ConsumerIterator<byte[], byte[]> iterator = partition.iterator();
 			while (iterator.hasNext()) {

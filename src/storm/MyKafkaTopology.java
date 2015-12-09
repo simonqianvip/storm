@@ -2,7 +2,6 @@ package storm;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -12,17 +11,11 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import com.google.gson.Gson;
-import com.sun.xml.internal.bind.v2.TODO;
-
-import entity.BillCharging;
-import entity.Race;
 import storm.kafka.BrokerHosts;
 import storm.kafka.KafkaSpout;
 import storm.kafka.SpoutConfig;
@@ -44,9 +37,14 @@ import backtype.storm.tuple.Fields;
 import backtype.storm.tuple.Tuple;
 import backtype.storm.tuple.Values;
 
+import com.google.gson.Gson;
+
+import entity.BillCharging;
+import entity.Race;
+
 public class MyKafkaTopology {
 	/**
-	 * °Ñjson×Ö·û´®×ª»»³ÉmapÀàÐÍ
+	 * ï¿½ï¿½jsonï¿½Ö·ï¿½×ªï¿½ï¿½ï¿½ï¿½mapï¿½ï¿½ï¿½ï¿½
 	 * @author simon
 	 *
 	 */
@@ -98,24 +96,24 @@ public class MyKafkaTopology {
 			List<Object> list = input.getValues();
 			Map<String,Map> billMap = new HashMap<String,Map>();
 			for(Object obj :list){
-				//È¡³öÉÏÒ»¸ötupleµÄÊý¾Ý
+				//È¡ï¿½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½tupleï¿½ï¿½ï¿½ï¿½ï¿½
 				Map map = (Map)obj;
-				//È¡³öÉÏÒ»¸ötupleµÄid£¨512»ò513£©
+				//È¡ï¿½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½tupleï¿½ï¿½idï¿½ï¿½512ï¿½ï¿½513ï¿½ï¿½
 				String id = (String) map.get("id");
 				System.out.println("id==============================================="+id);
 				
 				if(billMap != null){
-					//ÅÐ¶ÏbillMapÖÐÊÇ·ñ´æÔÚ´«¹ýÀ´µÄmap
+					//ï¿½Ð¶ï¿½billMapï¿½ï¿½ï¿½Ç·ï¿½ï¿½ï¿½Ú´ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½map
 					if(billMap.containsKey(id)){
 						Map valMap = billMap.get(id);
 						valMap.put("chargetime", map.get("chargetime"));
 						valMap.put("endtime", map.get("endtime"));
-						//²éÕÒµ½512ºÍ513Ö®ºó¾ÍÌá½»µ½ÏÂÒ»¸öbolt
+						//ï¿½ï¿½ï¿½Òµï¿½512ï¿½ï¿½513Ö®ï¿½ï¿½ï¿½ï¿½á½»ï¿½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½bolt
 						System.out.println("512+513============================================================"+valMap);
-						// TODO ¸ù¾ÝÒµÎñºÅ²éÑ¯ÒµÎñ×Ê·Ñ
+						// TODO ï¿½ï¿½ï¿½Òµï¿½ï¿½Å²ï¿½Ñ¯Òµï¿½ï¿½ï¿½Ê·ï¿½
 						List reverseList = reverseList(valMap.get("CALLED_NBR").toString());
 						
-						// TODO Ó³Éäµ½ÊµÌå
+						// TODO Ó³ï¿½äµ½Êµï¿½ï¿½
 						BillCharging bc = new BillCharging();
 						
 						for(Object service_id :reverseList){
@@ -129,8 +127,8 @@ public class MyKafkaTopology {
 								}
 							}
 						}
-						// TODO É¾³ýmap¼¯ºÏÀï512ºÍ513ºÏÆ´µÄ¼ÇÂ¼
-						// TODO ¼ÆËãºóµÄÊµÌåÌá½»µ½ÏÂ¸öbolt
+						// TODO É¾ï¿½ï¿½mapï¿½ï¿½ï¿½ï¿½ï¿½ï¿½512ï¿½ï¿½513ï¿½ï¿½Æ´ï¿½Ä¼ï¿½Â¼
+						// TODO ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Êµï¿½ï¿½ï¿½á½»ï¿½ï¿½ï¿½Â¸ï¿½bolt
 					}else{
 						billMap.put(id, map);
 						collector.emit(input,new Values(billMap.get(id)));
@@ -157,10 +155,10 @@ public class MyKafkaTopology {
 		}
 		
 		/**
-		 * ²éÑ¯billcharging±í
+		 * ï¿½ï¿½Ñ¯billchargingï¿½ï¿½
 		 * @throws Exception
 		 * @author simon
-		 * @date 2015Äê6ÔÂ15ÈÕ ÏÂÎç3:58:11
+		 * @date 2015ï¿½ï¿½6ï¿½ï¿½15ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½3:58:11
 		 */
 		public void selectBILLING_CHARGE() throws Exception{
 			Connection conn = OracleManagerUtil.getConnection();
@@ -179,11 +177,11 @@ public class MyKafkaTopology {
 		}
 		
 		/**
-		 * ¼¯ºÏ½µÐòÅÅÁÐ
+		 * ï¿½ï¿½ï¿½Ï½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 		 * @param str
 		 * @return
 		 * @author simon
-		 * @date 2015Äê6ÔÂ15ÈÕ ÏÂÎç4:04:28
+		 * @date 2015ï¿½ï¿½6ï¿½ï¿½15ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½4:04:28
 		 */
 		public List reverseList(String str){
 			List list = new ArrayList();
@@ -234,11 +232,11 @@ public class MyKafkaTopology {
 			}
 		}
 		/**
-		 * ÏûÏ¢Á÷¶¨Òå·½·¨
+		 * ï¿½ï¿½Ï¢ï¿½ï¿½ï¿½ï¿½ï¿½å·½ï¿½ï¿½
 		 */
 		@Override
 		public void declareOutputFields(OutputFieldsDeclarer declarer) {
-			//Ä¬ÈÏIDµÄÐÅÏ¢Á÷¶¨Òå
+			//Ä¬ï¿½ï¿½IDï¿½ï¿½ï¿½ï¿½Ï¢ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 			declarer.declare(new Fields("word", "count"));
 		}
 	}
@@ -262,8 +260,8 @@ public class MyKafkaTopology {
 		builder.setBolt("word-splitter", new KafkaWordSplitter(), 2).shuffleGrouping("kafka-reader");
 		/*
 		 * shuffleGrouping
-		 * µÚÒ»¸ö²ÎÊýÖ¸¶¨ÉÏÒ»¸öboltµÄid
-		 * µÚ¶þ¸ö²ÎÊýÖ¸¶¨ÉÏÒ»¸öbolt·½·¨ÀïµÄ£¬declareStreamµÄstreamid
+		 * ï¿½ï¿½Ò»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö¸ï¿½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½boltï¿½ï¿½id
+		 * ï¿½Ú¶ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö¸ï¿½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½boltï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä£ï¿½declareStreamï¿½ï¿½streamid
 		 */
 		builder.setBolt("word-counter", new ProcessBolt(),2).shuffleGrouping("word-splitter", "processStream");
 		Config conf = new Config();

@@ -63,11 +63,11 @@ public class KafkaSpouttest implements IRichSpout {
 		while (it.hasNext()) {
 			String value = new String(it.next().message());
 			SimpleDateFormat formatter = new SimpleDateFormat(
-					"yyyy年MM月dd日 HH:mm:ss SSS");
-			Date curDate = new Date(System.currentTimeMillis());// 获取当前时间
+					"yyyy锟斤拷MM锟斤拷dd锟斤拷 HH:mm:ss SSS");
+			Date curDate = new Date(System.currentTimeMillis());// 锟斤拷取锟斤拷前时锟斤拷
 			String str = formatter.format(curDate);
 
-			System.out.println("storm接收到来自kafka的消息------->" + value);
+			System.out.println("storm锟斤拷锟秸碉拷锟斤拷锟斤拷kafka锟斤拷锟斤拷息------->" + value);
 
 			collector.emit(new Values(value, 1, str), value);
 		}
@@ -75,13 +75,10 @@ public class KafkaSpouttest implements IRichSpout {
 
 	private static ConsumerConfig createConsumerConfig() {
 		Properties props = new Properties();
-		// 设置zookeeper的链接地址
 		props.put(
 				"zookeeper.connect",
 				"JSNJ-IVR-SRV-I620G10-22:2181,JSNJ-IVR-SRV-I620G10-23:2181,JSNJ-IVR-SRV-I620G10-24:2181");
-		// 设置group id
 		props.put("group.id", "1");
-		// kafka的group 消费记录是保存在zookeeper上的, 但这个信息在zookeeper上不是实时更新的, 需要有个间隔时间更新
 		props.put("auto.commit.interval.ms", "1000");
 		props.put("zookeeper.session.timeout.ms", "10000");
 		return new ConsumerConfig(props);
@@ -106,7 +103,7 @@ public class KafkaSpouttest implements IRichSpout {
 
 	@Override
 	public Map<String, Object> getComponentConfiguration() {
-		System.out.println("getComponentConfiguration被调用");
+		System.out.println("getComponentConfiguration锟斤拷锟斤拷锟斤拷");
 		topic = "myTopic";
 		return null;
 	}
