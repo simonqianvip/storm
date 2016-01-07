@@ -199,6 +199,31 @@ public class ChargingTopology {
 			@SuppressWarnings("rawtypes")
 			Map map = (Map) input.getValue(0);
 			String api_k = String.valueOf(map.get("api_k"));
+			if("512".equals(api_k)){
+				String begintime = String.valueOf(map.get("begintime"));
+				String called = String.valueOf(map.get("called"));
+				String caller = String.valueOf(map.get("caller"));
+				String callref = String.valueOf(map.get("callref"));
+				String calltag = String.valueOf(map.get("calltag"));
+				String ehangip = String.valueOf(map.get("ehangip"));
+				String huaweiip = String.valueOf(map.get("huaweiip"));
+				String id = String.valueOf(map.get("id"));
+				String locationum = String.valueOf(map.get("locationum"));
+				String rbusNo = String.valueOf(map.get("rbusNo"));
+				String siphandle = String.valueOf(map.get("siphandle"));
+				String telhandle = String.valueOf(map.get("telhandle"));
+				String tostation = String.valueOf(map.get("tostation"));
+				String uuid = String.valueOf(map.get("uuid"));
+				try {
+					if(conn != null){
+						OracleManagerUtil.getPrepareADDCall(conn,
+								begintime, called, caller, callref,
+								calltag,ehangip,huaweiip,id,locationum,rbusNo,siphandle,telhandle,tostation,uuid);
+					}
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
 
 			if ("512".equals(api_k) || "513".equals(api_k)) {
 				String id = String.valueOf(map.get("id"));
@@ -218,12 +243,13 @@ public class ChargingTopology {
 								jedisMap.put(key, value);
 							}
 							log.info("redis库里存在："+jedisMap);
-							String calltag = jedisMap.get("calltag");
+//							String calltag = jedisMap.get("calltag");
 							String chargeTime = jedisMap.get("chargetime");
 							String endTime = jedisMap.get("endtime");
+							String uuid = jedisMap.get("uuid");
 //							log.info("jedisMap == "+jedisMap);
-							if ("1".equals(calltag) && chargeTime != null
-									&& chargeTime.trim().length() != 0 && endTime.trim().length() != 0) {
+//							if ("1".equals(calltag) && chargeTime != null
+//									&& chargeTime.trim().length() != 0 && endTime.trim().length() != 0) {
 								String caller = jedisMap.get("caller");
 								String called = jedisMap.get("called");
 								String locationum = jedisMap.get("locationum");
@@ -233,17 +259,12 @@ public class ChargingTopology {
 									if(conn != null){
 										OracleManagerUtil.getPrepareCall(conn,
 												caller, called, ctime, etime,
-												locationum);
-									}else{
-										this.conn = getConnection();
-										OracleManagerUtil.getPrepareCall(conn,
-												caller, called, ctime, etime,
-												locationum);
+												locationum,uuid);
 									}
 								} catch (Exception e) {
 									e.printStackTrace();
 								}
-							}
+//							}
 						}
 					} else {
 						log.info("redis库里不存在："+map);
@@ -332,7 +353,7 @@ public class ChargingTopology {
 		// 集群环境下
 		if (args != null && args.length > 0) {
 			String name = args[0];
-			//设置spout的最大缓存数，超过1000条就不再拉取数据了,默认是1
+			//设置spout的最大缓存数，超过2000条就不再拉取数据了,默认是0(这得看是cdh版本的还是Apache版本的)
 			config.setMaxSpoutPending(2000);
 			config.setNumWorkers(4);
 //			config.setDebug(true);
