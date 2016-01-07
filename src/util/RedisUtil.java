@@ -19,7 +19,7 @@ public class RedisUtil {
 	 */
 	public static void showResult() {
 		Jedis jedis = rc.getJedis();
-		jedis.select(1);
+//		jedis.select(1);
 		Long size = jedis.dbSize();
 		log.info("key的个数=" + size);
 		log.error("key的个数=" + size);
