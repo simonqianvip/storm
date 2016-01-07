@@ -205,18 +205,19 @@ public class ChargingTopology {
 								String caller = jedisMap.get("caller");
 								String called = jedisMap.get("called");
 								String locationum = jedisMap.get("locationum");
+								String uuid = jedisMap.get("uuid");
 								String ctime = tu.formatTime(chargeTime);
 								String etime = tu.formatTime(endTime);
 								try {
 									if(conn != null){
 										OracleManagerUtil.getPrepareCall(conn,
 												caller, called, ctime, etime,
-												locationum);
+												locationum,uuid);
 									}else{
 										this.conn = getConnection();
 										OracleManagerUtil.getPrepareCall(conn,
 												caller, called, ctime, etime,
-												locationum);
+												locationum,uuid);
 									}
 								} catch (Exception e) {
 									e.printStackTrace();
