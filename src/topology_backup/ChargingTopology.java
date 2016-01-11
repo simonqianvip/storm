@@ -71,7 +71,7 @@ public class ChargingTopology {
 				
 				if (api_k.equals("512") || api_k.equals("513")
 						|| api_k.equals("516")) {
-					log.info("source:"+map);
+//					log.info("source:"+map);
 					collector.emit("getCallingInfo", input, new Values(api_k, map));
 					// collector.emit("getChargingInfo", input, new Values(map));
 				} 
@@ -84,7 +84,6 @@ public class ChargingTopology {
 			declarer.declareStream("getCallingInfo", new Fields("api_k", "map"));
 //			declarer.declareStream("printChargingInfo", new Fields("printInfo"));
 		}
-
 	}
 
 	/**
@@ -178,9 +177,9 @@ public class ChargingTopology {
 				Class.forName("oracle.jdbc.OracleDriver");
 				con = DriverManager.getConnection(url, "settle",
 						"jsnjivrsettle");
-				log.info("*******************************************数据库连接成功！**********************************");
+				log.info("【 数据库连接成功！】");
 			} catch (Exception e) {
-				log.info("******************************连接数据库失败******************************"+ e.getMessage());
+				log.info("【连接数据库失败】："+ e.getMessage());
 				e.printStackTrace();
 			}
 			return con;
@@ -201,6 +200,13 @@ public class ChargingTopology {
 			String api_k = String.valueOf(map.get("api_k"));
 			if("512".equals(api_k)){
 				String begintime = String.valueOf(map.get("begintime"));
+				String btime="";
+				if(begintime.trim().length() != 0){
+					btime = tu.formatTime(begintime);
+				}else{
+					btime = begintime;
+				}
+				
 				String called = String.valueOf(map.get("called"));
 				String caller = String.valueOf(map.get("caller"));
 				String callref = String.valueOf(map.get("callref"));
@@ -217,7 +223,7 @@ public class ChargingTopology {
 				try {
 					if(conn != null){
 						OracleManagerUtil.getPrepareADDCall(conn,
-								begintime, called, caller, callref,
+								btime, called, caller, callref,
 								calltag,ehangip,huaweiip,id,locationum,rbusNo,siphandle,telhandle,tostation,uuid);
 					}
 				} catch (Exception e) {
@@ -242,7 +248,7 @@ public class ChargingTopology {
 								String value = String.valueOf(map.get(key));
 								jedisMap.put(key, value);
 							}
-							log.info("redis库里存在："+jedisMap);
+//							log.info("redis库里存在："+jedisMap);
 //							String calltag = jedisMap.get("calltag");
 							String chargeTime = jedisMap.get("chargetime");
 							String endTime = jedisMap.get("endtime");
@@ -253,8 +259,18 @@ public class ChargingTopology {
 								String caller = jedisMap.get("caller");
 								String called = jedisMap.get("called");
 								String locationum = jedisMap.get("locationum");
-								String ctime = tu.formatTime(chargeTime);
-								String etime = tu.formatTime(endTime);
+								String ctime = "";
+								if(chargeTime != null && chargeTime.trim().length() != 0){
+									ctime = tu.formatTime(chargeTime);
+								}else{
+									ctime = chargeTime;
+								}
+								String etime = "";
+								if(endTime.trim().length() != 0){
+									etime = tu.formatTime(endTime);
+								}else{
+									etime = endTime;
+								}
 								try {
 									if(conn != null){
 										OracleManagerUtil.getPrepareCall(conn,
@@ -267,7 +283,7 @@ public class ChargingTopology {
 //							}
 						}
 					} else {
-						log.info("redis库里不存在："+map);
+//						log.info("redis库里不存在："+map);
 						HashMap<String, String> newMap = new HashMap<String, String>();
 						@SuppressWarnings("unchecked")
 						Iterator<String> iter = map.keySet().iterator();
@@ -292,27 +308,6 @@ public class ChargingTopology {
 
 	}
 
-//	public static class Print extends BaseRichBolt {
-//		private static final Log LOG = LogFactory.getLog(Print.class);
-//		private static final long serialVersionUID = 64499411706133149L;
-//		private OutputCollector collector;
-//
-//		@Override
-//		public void execute(Tuple arg0) {
-//			List<Object> list = arg0.getValues();
-//			collector.ack(arg0);
-//		}
-//
-//		@Override
-//		public void prepare(Map arg0, TopologyContext arg1, OutputCollector arg2) {
-//			this.collector = arg2;
-//		}
-//
-//		@Override
-//		public void declareOutputFields(OutputFieldsDeclarer arg0) {
-//		}
-//	}
-
 	private StormTopology builTopology() {
 		SpoutConfig spoutConf = new SpoutConfig(this.brokerHosts, this.topic,
 				"/kafka", "charging_topology");
@@ -334,9 +329,6 @@ public class ChargingTopology {
 
 		 builder.setBolt("charingInfo", new
 		 GetChargingInfo(),6).shuffleGrouping("callingInfo");
-
-//		builder.setBolt("print", new Print(), 10).shuffleGrouping("toMap",
-//				"printChargingInfo");
 
 		return builder.createTopology();
 	}
