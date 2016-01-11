@@ -1,5 +1,7 @@
 package util;
 
+import java.util.List;
+
 import org.apache.commons.logging.*;
 
 import redis.clients.jedis.Jedis;
@@ -18,10 +20,17 @@ public class RedisClient {
 	private static boolean TEST_ON_BORROW = true;
 	private static String AUTH = "gyredis";
 	private static JedisPool jedisPool = null;
+	
 	/**
 	 * redis初始化
 	 */
-	static {
+	static{
+		initjedis();
+	}
+	/**
+	 * 获取redis连接池
+	 */
+	public static void initjedis() {
 		try {
 			JedisPoolConfig config = new JedisPoolConfig();
 			config.setMaxTotal(MAX_ACTIVE);
@@ -29,27 +38,35 @@ public class RedisClient {
 			config.setMaxWaitMillis(MAX_WAIT);
 			config.setTestOnBorrow(TEST_ON_BORROW);
 			jedisPool = new JedisPool(config, ADDR, PORT, TIMEOUT,AUTH);
+			log.info("【init jedis,Get jedisPool success】");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
 
 	/**
-	 * 获取redis连接池
+	 * 获取redis对象
 	 * @return
 	 */
 	public synchronized static Jedis getJedis() {
 		try {
+			Jedis jedis = null;
 			if (jedisPool != null) {
-				Jedis resource = jedisPool.getResource();
-				log.info("【 get redis resource success 】");
-				return resource;
-			} else {
-				log.error("【 get redis resource fail 】");
-				return null;
+				jedis = jedisPool.getResource();
+				if(jedis!=null){
+					log.info("【 get redis resource success 】");
+				}else{
+					log.error("【 get redis resource fail 】");
+				}
+				return jedis;
+			}else{
+				initjedis();
+				jedis = jedisPool.getResource();
+				return jedis;
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
+			log.info("【get redis is error 】"+e.getMessage());
 			return null;
 		}
 	}
@@ -64,5 +81,9 @@ public class RedisClient {
 			log.info("【 return redis resource 】");
 		}
 	}
+//	public static void main(String[] args) {
+//		RedisClient.getJedis();
+//		
+//	}
 
 }
