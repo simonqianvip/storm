@@ -63,7 +63,7 @@ public class OracleManagerUtil{
 			prepareCall.setString(3, chargetime);
 			prepareCall.setString(4, endtime);
 			prepareCall.setString(5, locationum);
-			prepareCall.setString(5, uuid);
+			prepareCall.setString(6, uuid);
 			int i = prepareCall.executeUpdate();
 			if (i != 0) {
 				System.out.println("insert into table is success");
@@ -84,7 +84,7 @@ public class OracleManagerUtil{
 		CallableStatement prepareCall = null;
 		try {
 			prepareCall = con
-					.prepareCall("{call SETTLE.ONLINE_BILLING.BILL_MAIN(?,?,?,?,?,?,?,?,?,?,?,?,?,?)}");
+					.prepareCall("{call SETTLE.ONLINE_BILLING.ADD_CALL ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? )}");
 			prepareCall.setString(1, I_BEGINTIME);
 			prepareCall.setString(2, I_CALLED);
 			prepareCall.setString(3, I_CALLER);
@@ -110,14 +110,16 @@ public class OracleManagerUtil{
 		}
 	}
 
-//	public static void main(String[] args) throws Exception {
-//		Connection connection = OracleManagerUtil.getConnection();
-//		if(connection != null){
-//			System.out.println("连接数据库成功！");
-//		}else{
-//			System.out.println("连接数据库失败！");
-//		}
-//	}
+	public static void main(String[] args) throws Exception {
+		Connection connection = OracleManagerUtil.getConnection();
+		if(connection != null){
+			System.out.println("连接数据库成功！");
+			getPrepareADDCall(connection,"2015-11-17 15:27:02","125905074003","15848124833","2349A726FE05","1","172.16.216.16","172.16.200.4","60386897_20151117152702394",
+					"86471","39","6.0.386897","6.0.2512766","10","27018cfe_20151117152702404");
+		}else{
+			System.out.println("连接数据库失败！");
+		}
+	}
 	
 }
 

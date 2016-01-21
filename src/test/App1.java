@@ -1,23 +1,13 @@
 package test;
 
-import java.util.HashMap;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 
 public class App1 {
-
+	private static Log log = LogFactory.getLog("App1");
 	public static void main(String[] args) throws Exception {
-//		String line = "";
-//		@SuppressWarnings("unchecked")
-//		Map<String, String> map = (Map<String, String>) JSONValue
-//				.parse(line);
-		HashMap<String, String> hashMap = new HashMap<String,String>();
-		String name = "jack";
-		
-		String str = String.valueOf(hashMap.get("name"));
-		
-		if(name.equals(str)){
-			System.out.println("true");
-		}else{
-			System.out.println("false");
-		}
+		log.info("very good");
+		log.error("error");
 	}
 }

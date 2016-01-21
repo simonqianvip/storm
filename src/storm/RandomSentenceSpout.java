@@ -50,5 +50,4 @@ public class RandomSentenceSpout extends BaseRichSpout {
 	public void declareOutputFields(OutputFieldsDeclarer declarer) {
 		declarer.declare(new Fields("word"));
 	}
-
 }

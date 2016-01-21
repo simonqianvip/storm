@@ -41,7 +41,6 @@
 	<classpathentry kind="lib" path="D:/package/JAR/commons-pool-1.5.6.jar"/>
 	<classpathentry kind="lib" path="D:/package/JAR/commons-pool2-2.2.jar"/>
 	<classpathentry kind="lib" path="D:/package/JAR/storm-kafka-0.9.4.jar"/>
-	<classpathentry kind="lib" path="C:/Users/simon/Desktop/lib/storm-core-0.9.4.jar"/>
 	<classpathentry kind="lib" path="D:/package/JAR/apache-commons.jar"/>
 	<classpathentry kind="lib" path="D:/package/JAR/commons-dbcp2-2.1.1/commons-dbcp2-2.1.1.jar"/>
 	<classpathentry kind="lib" path="D:/package/apache-storm-0.9.4/lib/storm-core-0.9.4.jar"/>

@@ -249,13 +249,14 @@ public class ChargingTopology {
 								jedisMap.put(key, value);
 							}
 //							log.info("redis库里存在："+jedisMap);
-//							String calltag = jedisMap.get("calltag");
+							String calltag = jedisMap.get("calltag");
 							String chargeTime = jedisMap.get("chargetime");
 							String endTime = jedisMap.get("endtime");
 							String uuid = jedisMap.get("uuid");
 //							log.info("jedisMap == "+jedisMap);
 //							if ("1".equals(calltag) && chargeTime != null
 //									&& chargeTime.trim().length() != 0 && endTime.trim().length() != 0) {
+							if("1".equals(calltag)){
 								String caller = jedisMap.get("caller");
 								String called = jedisMap.get("called");
 								String locationum = jedisMap.get("locationum");
@@ -280,6 +281,7 @@ public class ChargingTopology {
 								} catch (Exception e) {
 									e.printStackTrace();
 								}
+							}
 //							}
 						}
 					} else {
