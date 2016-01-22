@@ -170,9 +170,8 @@ public class ChargingTopology {
 		public static Connection getConnection() {
 			Connection con = null;
 			String url="jdbc:oracle:thin:@(DESCRIPTION="
-					+ "(LOAD_BALANCE=on)"
-					+ "(ADDRESS=(PROTOCOL=TCP) (HOST=172.16.64.47)(PORT=1521))"
-					+ "(CONNECT_DATA=(SERVICE_NAME=IVRREP)) )";
+					+ "(ADDRESS=(PROTOCOL=TCP) (HOST=172.16.64.31)(PORT=1521))"
+					+ "(CONNECT_DATA=(sid=ivrpro1)) )";
 			try {
 				Class.forName("oracle.jdbc.OracleDriver");
 				con = DriverManager.getConnection(url, "settle",
